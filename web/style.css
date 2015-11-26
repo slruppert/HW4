@@ -1,0 +1,33 @@
+/* Font = Arial 
+Background Color = #FFF6FF
+
+*/
+
+
+body {
+	font-family:Arial; 
+	background-color:#D2B48C;
+}
+
+header{
+	width:80%;
+	color:black;
+	margin-right:auto;
+	margin-left:auto;
+}
+#places th{
+    background-color: #FFFF99;
+    color: #696969;
+}
+
+table, th, td {
+    border: 5px solid #FFFFFF;
+    th {background-color: #F08080;
+    color: white }
+    
+}
+
+p{
+	margin:10px;
+}
+
