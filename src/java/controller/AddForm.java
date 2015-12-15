@@ -5,7 +5,6 @@
  */
 package controller;
 
-import dbHelpers.ReadQuery;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -19,8 +18,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author shylaruppert
  */
-@WebServlet(name = "Read", urlPatterns = {"/read"})
-public class Read extends HttpServlet {
+@WebServlet(name = "AddForm", urlPatterns = {"/add"})
+public class AddForm extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +38,10 @@ public class Read extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Read</title>");            
+            out.println("<title>Servlet AddForm</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Read at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddForm at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,7 +59,7 @@ public class Read extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            doPost(request, response);
+            doPost(request,response);
     }
 
     /**
@@ -74,20 +73,9 @@ public class Read extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                //Create a ReadQuery helper object
-                ReadQuery rq = new ReadQuery();
-                //Get HTML table from Read Query
-                rq.doRead();
-                String table = rq.getHTMLtable();
-                
-                //Pass execution control to read.jsp along with table
-                request.setAttribute("table",table);
-                String url = "/read.jsp";
-                
-                RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-                dispatcher.forward(request, response);
-        
-        processRequest(request, response);
+            String url ="add.jsp";
+            RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+            dispatcher.forward (request, response);
     }
 
     /**

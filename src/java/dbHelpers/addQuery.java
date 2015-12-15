@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package dbHelpers;
 
 import java.io.IOException;
@@ -12,24 +17,27 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Customer;
 
-
-public class ReadQuery {
+/**
+ *
+ * @author shylaruppert
+ */
+public class addQuery {
     private Connection conn;
     private ResultSet results;
     
-    public ReadQuery() {
+    public addQuery() {
         
-        Properties props = new Properties(); 
-        InputStream instr = getClass().getResourceAsStream("dbcon.properties");
+    Properties props = new Properties(); 
+    InputStream instr = getClass().getResourceAsStream("dbcon.properties");
         try {
             props.load(instr);
         } catch (IOException ex) {
-            Logger.getLogger(ReadQuery.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(addQuery.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             instr.close();
         } catch (IOException ex) {
-            Logger.getLogger(ReadQuery.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(addQuery.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     String driver = props.getProperty("driver.name");
@@ -39,28 +47,33 @@ public class ReadQuery {
         try {
             Class.forName(driver);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ReadQuery.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(addQuery.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {        
             conn = DriverManager.getConnection(url, username, passwd);
         } catch (SQLException ex) {
-            Logger.getLogger(ReadQuery.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(addQuery.class.getName()).log(Level.SEVERE, null, ex);
         }
                 
              }
-    public void doRead(){
-        String query = "Select * FROM Customer ORDER BY customerID ASC";
+    public void doAdd(Customer customer) throws SQLException{
+        String query = "Insert INTO customer (FirstName, LastName, Address1, Address2, City, State1, Zip, EmailAddr, Age VALUES (?,?,?,?,?,?,?,?,?) ";
         
-        PreparedStatement ps = null;
-        try {
-            ps = conn.prepareStatement(query);
-        } catch (SQLException ex) {
-            Logger.getLogger(ReadQuery.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString (1,customer.getFirstName());
+            ps.setString(2,customer.getLastName());
+            ps.setString(3,customer.getAddress1());
+            ps.setString(4,customer.getAddress2());
+            ps.setString(5,customer.getCity());
+            ps.setString(6,customer.getState1());
+            ps.setString(7, customer.getEmailAddr());
+            ps.setInt(8, customer.getAge());
+        
+        
         try {
             this.results = ps.executeQuery();
         } catch (SQLException ex) {
-            Logger.getLogger(ReadQuery.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(addQuery.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -143,11 +156,12 @@ public class ReadQuery {
                 table += customer.getAge();
                 
                 table += "</td>";
-                table += "< href=update?customerID=" + customer.getCustomerID() + ">Update </a>" + "<a href=delete?customerID"+ customer.getCustomerID() + "> Delete </a>";
-                table += "</tr>";   
+                
+                table += "</tr>";
+                
             }
         } catch (SQLException ex) {
-            Logger.getLogger(ReadQuery.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(addQuery.class.getName()).log(Level.SEVERE, null, ex);
         }
         table += "</table>";
                 return table;
